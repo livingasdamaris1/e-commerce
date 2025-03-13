@@ -1,11 +1,14 @@
 import { Router } from "express";
 import { addProduct, countProducts, deleteProduct, getProducts, updateProduct } from "../controllers/products.js";
-
+import { localUpload, remoteUpload } from "../middlewares/uploads.js";
 // create a product router
 const productsRouter = Router();
+//Check if user has permission will also be done with a middleware
 
 // define routes
-productsRouter.post('/products', addProduct);
+
+ // upload product image is done with local upload middleware
+productsRouter.post('/products', remoteUpload.single('image'), addProduct);
 
 productsRouter.get('/products', getProducts);
 
