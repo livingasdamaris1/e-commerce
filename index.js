@@ -2,6 +2,7 @@ import express from "express";
 import productsRouter from "./routes/products.js";
 import mongoose from "mongoose";
 import cors from "cors";
+import usersRouter from "./routes/users.js";
 
 // Make database connection /1,specify username and password/ 2, specify database name after mongodb.net/
 
@@ -13,10 +14,11 @@ const app = express();
 // Use global middlewares
 app.use(express.json());
 
-app.use(cors)
+app.use(cors())
 
 // Use routes
 app.use(productsRouter);
+app.use(usersRouter);
 
 //listen for incoming requests
 const port = process.env.PORT || 3000

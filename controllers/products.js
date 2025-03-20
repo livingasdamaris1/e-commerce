@@ -8,7 +8,10 @@ export const addProduct = async (req, res, next) => {
     // validate product information
     const { error, value } = addProductValidator.validate({
       ...req.body,
-      image:req.file.filename
+      // image: req.file?.filename,
+      pictures: req.files?.map((file) => {
+        return file.filename
+      }),
     }, {abortEarly:false});
     if (error) {
       return res.status(422).json(error)
@@ -24,8 +27,11 @@ export const addProduct = async (req, res, next) => {
 
 export const getProducts = async(req, res) => {
   try {
+    const {filter = "{}", sort = "{}" } = req.query;
     // Fetch products from database
-    const result = await ProductModel.find();
+    const result = await ProductModel
+      .find(JSON.parse(filter))
+      .sort(JSON.parse(sort));
     // Return response
     res.json(result);
   } catch (error) {
@@ -39,6 +45,7 @@ export const countProducts = (req, res) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
+    console.log(req.file, req.files);
     const result = await ProductModel.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
