@@ -45,7 +45,6 @@ export const countProducts = (req, res) => {
 
 export const updateProduct = async (req, res, next) => {
   try {
-    console.log(req.file, req.files);
     const result = await ProductModel.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
